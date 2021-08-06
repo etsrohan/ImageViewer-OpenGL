@@ -25,4 +25,5 @@ Steps for success:
     3) Looking forward there is a texture chapter on the website I am using. Take a look at that.
     4) Apply a texture to the square or apply a shader to it (not mutually exclusive) and display an image.
     5) Profit.
+Things to do: Use GNU Make to make things easier, Ask about RAW image format. Apply image onto square.
 Things I dont know: how to load a RAW image (format of RAW image), how to apply texture to square. How to optimize for GPU.
