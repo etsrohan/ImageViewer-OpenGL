@@ -1,1 +1,0 @@
-This is a readme file that will record the changes and steps I have taken for the mini-project.
