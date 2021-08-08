@@ -2,6 +2,8 @@
     "files.associations": {
         "glfw3.h": "c",
         "stdio.h": "c",
-        "glad.h": "c"
-    }
+        "glad.h": "c",
+        "stdlib.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }

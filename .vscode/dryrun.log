@@ -1,0 +1,7 @@
+make.exe --dry-run --keep-going --print-directory
+make.exe: Entering directory 'c:/Users/Rohan/Desktop/OrqaFPVMiniProject'
+gcc -c stb_image.c
+ 
+gcc main.o glad.o stb_image.o -o pic_display -lglfw3 -lgdi32 -lopengl32
+make.exe: Leaving directory 'c:/Users/Rohan/Desktop/OrqaFPVMiniProject'
+ 
