@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h> //sin()
 
 // Shader struct
 typedef struct {
@@ -61,7 +62,7 @@ int main(void){
     // Initialize Window
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    window = glfwCreateWindow(640, 480, "Image Loader", NULL, NULL);
+    window = glfwCreateWindow(883, 498, "Image Loader", NULL, NULL);
     if (!window){
         printf("Couldn't open window\n");
         glfwTerminate();
@@ -135,6 +136,7 @@ int main(void){
     stbi_set_flip_vertically_on_load(1); // Setting image to load right side up
     data = stbi_load("rinnegan.png", &img_width, & img_height, &nrChannels, 0);
     if(data){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img_width, img_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -158,6 +160,7 @@ int main(void){
     stbi_set_flip_vertically_on_load(1); // Setting image to load right side up
     data = stbi_load("jiraya.jpg", &img_width, & img_height, &nrChannels, 0);
     if(data){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img_width, img_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
@@ -190,6 +193,11 @@ int main(void){
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
+
+        // Putting in sine gamma for 1st texture
+        GLfloat timeValue = glfwGetTime();
+        GLfloat gamma = (sin(timeValue) / 2) + 0.5;
+        glUniform1f(glGetUniformLocation(shaderProgram, "gamma"), gamma);
 
         // Set shader program
         glUseProgram(shaderProgram);
@@ -264,7 +272,6 @@ char* read_source_code(char* filename){
             buffer[i] = '\0';
             break;
         }
-
     }
 
     //printf(buffer);

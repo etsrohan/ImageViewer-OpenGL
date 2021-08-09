@@ -43,3 +43,7 @@ After reading up on textures and how they are loaded up to the GL_TEXTURE_2D buf
 Yay! I can display an image on my square! And I can make 2 textures and overlap them too! I made the square as big as the window that was opened and boom image loader is in action.
 Things to do: Make a shader to load YUV images as well as RGB images (maybe separate shaders depending on which type of image is used), Optimize for GPU.
 Things I dont know: RAW image file loading needed? What is YUV image format. How Im going to optimize for GPU.
+
+Monday 09/08/2021:
+Part 1:
+I noticed that some of the images were not being loaded in / displayed properly (this happened mainly with jpg file format), so I added the line "glPixelStorei(GL_UNPACK_ALIGNMENT, 1);" before loading the image into the texture buffer. Also as a fun experiment I made the first texture values vary with time using a sine wave uniform sent to the fragment shader.
