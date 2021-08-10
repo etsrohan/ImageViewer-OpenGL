@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h> //sin()
+#include <string.h> //memcpy
 
 // Shader struct
 typedef struct {
@@ -18,13 +19,14 @@ typedef struct {
 // Function Declarations
 static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 char* read_source_code(char* filename);
+uint8_t* read_YUV_420_image(char* filename, int width, int height);
 
 // Static Variables
 static const float vertices[] = { //Array of vertices coordinates in 3D
-   -1.0f, -1.0f, 0.0f,      1.0f, 0.0f, 0.0f,       0.0f, 0.0f,//1, Bottom Left
-    1.0f, -1.0f, 0.0f,      0.0f, 1.0f, 0.0f,       1.0f, 0.0f,//2, Bottom Right
-    1.0f,  1.0f, 0.0f,      1.0f, 0.0f, 0.0f,       1.0f, 1.0f,//3, Top Right
-   -1.0f,  1.0f, 0.0f,      0.0f, 0.0f, 1.0f,       0.0f, 1.0f //4, Top Left
+   -1.0f, -1.0f, 0.0f,      0.0f, 0.0f,//1, Bottom Left
+    1.0f, -1.0f, 0.0f,      1.0f, 0.0f,//2, Bottom Right
+    1.0f,  1.0f, 0.0f,      1.0f, 1.0f,//3, Top Right
+   -1.0f,  1.0f, 0.0f,      0.0f, 1.0f //4, Top Left
 };
 static const unsigned int indices[] = { // Array of indices for setting up 2 triangles
     0, 1, 2, //Triangle 1
@@ -42,13 +44,14 @@ int main(void){
     MyShader  vertexShader, fragmentShader;
     char* dummy1, * dummy2;
     // Initialize Texture variables
-    int img_width, img_height, nrChannels;
-    unsigned char * data;
-    unsigned int texture1, texture2; 
+    int img_width = 750, img_height = 500, nrChannels, loop_index;
+    uint8_t *yuv_data;
+    uint8_t *y_plane = NULL, *u_plane = NULL, *v_plane = NULL;
+    unsigned int texture1, texture2, texture3;
 
     // Initialize src code for shaders
-    dummy1 = read_source_code("shaders/vertex.shader");
-    dummy2 = read_source_code("shaders/fragment.shader");
+    dummy1 = read_source_code("shaders/vertex_YUV.shader");
+    dummy2 = read_source_code("shaders/fragment_YUV.shader");
     vertexShader.src_code = dummy1;
     fragmentShader.src_code = dummy2;
 
@@ -62,7 +65,7 @@ int main(void){
     // Initialize Window
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    window = glfwCreateWindow(883, 498, "Image Loader", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Image Loader", NULL, NULL);
     if (!window){
         printf("Couldn't open window\n");
         glfwTerminate();
@@ -108,20 +111,17 @@ int main(void){
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Taking Position input from object into buffer 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) 0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
 
     // Unbinding VAO and VBO (not necessary but to be safe)
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    // TEXTURE 1
+    /*// TEXTURE 1
     // load and create texture1
     glGenTextures(1, &texture1);
     glBindTexture(GL_TEXTURE_2D, texture1);
@@ -144,36 +144,69 @@ int main(void){
     else {
         printf("Failed to load texture\n");
     }
-    stbi_image_free(data);
+    stbi_image_free(data);*/
 
-    // TEXTURE 2
-    // load and create texture2
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
+    // Opening and setting YUV file and parameters
+    yuv_data = read_YUV_420_image("mesa_750_500.yuv", img_width, img_height);
+    printf("Hello there\n");
 
-    // set texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        //filtering parameters
+    // Setting up y/u/v_plane to pass to shader
+    y_plane = yuv_data;
+    u_plane = yuv_data + img_width * img_height;
+    v_plane = yuv_data + img_width * img_height + (int) (img_width * img_height / 4);
+
+    // Send the plane values to shader as separate shaders
+        // Y Values
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // create texture from loaded image
-    stbi_set_flip_vertically_on_load(1); // Setting image to load right side up
-    data = stbi_load("jiraya.jpg", &img_width, & img_height, &nrChannels, 0);
-    if(data){
+
+    if(y_plane){
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img_width, img_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width, img_height, 0, GL_RED, GL_UNSIGNED_BYTE, y_plane);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
-    else {
-        printf("Failed to load texture\n");
+    else printf("Y values failed to load\n");
+        // U Values
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if(u_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, u_plane);
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
-    stbi_image_free(data);
+    else printf("U values failed to load\n");
+
+        // V Values
+    glGenTextures(1, &texture3);
+    glBindTexture(GL_TEXTURE_2D, texture3);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if(v_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, v_plane);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else printf("V values failed to load\n");
+
+    printf("%d", img_height * img_width);
 
     // Give fragment shaders their respective textures
     glUseProgram(shaderProgram);
     glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
     glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
+    glUniform1i(glGetUniformLocation(shaderProgram, "texture3"), 2);
 
     // Input Callback
     glfwSetKeyCallback(window, keyCallback);
@@ -194,11 +227,8 @@ int main(void){
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
-
-        // Putting in sine gamma for 1st texture
-        GLfloat timeValue = glfwGetTime();
-        GLfloat gamma = (sin(timeValue) / 2) + 0.5;
-        glUniform1f(glGetUniformLocation(shaderProgram, "gamma"), gamma);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, texture3);
 
         // Set shader program
         glUseProgram(shaderProgram);
@@ -217,6 +247,7 @@ int main(void){
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
     
+    free(yuv_data);
     free(dummy1);
     free(dummy2);
     // End glfw api
@@ -278,4 +309,29 @@ char* read_source_code(char* filename){
     //printf(buffer);
     //printf("\n");
     return buffer;
+}
+
+uint8_t* read_YUV_420_image(char* filename, int width, int height){
+    /*This function takes in a YUV format (Raw) and breaks it down into 3 arrays, 
+    luminance (Y component), chrominanceU (U component), chrominanceV (V component)
+    and returns the 3 arrays to the user
+    Note: This function does require that the user be aware of the width and height 
+    of the image*/
+
+    FILE* file_pointer = NULL;
+    uint8_t* yuv_data = NULL;
+
+    file_pointer = fopen(filename, "r");
+
+    if(file_pointer){
+        yuv_data = malloc(width * height * 3 / 2 + 1);
+        fseek(file_pointer, 0, SEEK_SET);
+        fread(yuv_data, sizeof(uint8_t), width * height * 3 / 2, file_pointer);
+        yuv_data[width * height * 3 / 2] = '\0';
+        fclose(file_pointer);
+    }
+    else{
+        printf("FILE FAILED TO LOAD\n");
+    }
+    return yuv_data;
 }

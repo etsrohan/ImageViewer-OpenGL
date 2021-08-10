@@ -47,3 +47,19 @@ Things I dont know: RAW image file loading needed? What is YUV image format. How
 Monday 09/08/2021:
 Part 1:
 I noticed that some of the images were not being loaded in / displayed properly (this happened mainly with jpg file format), so I added the line "glPixelStorei(GL_UNPACK_ALIGNMENT, 1);" before loading the image into the texture buffer. Also as a fun experiment I made the first texture values vary with time using a sine wave uniform sent to the fragment shader.
+
+Part 2:
+I spent the rest of the day coming up with an algorithm to unpack the YUV420 image file. And made the function too. My thinking was at this point that:
+1) I would load 3 arrays with the respective  Y, U and V values.
+2) Then I will assign the values of U and V to their respective posistions using this algorithm in a for loop looping through all the values of U and V
+    if(i % (width / 2) == 0) loop_index++;
+    chrominanceU[i * 2 + img_width * loop_index] = img_dummy[i];
+    chrominanceU[i * 2 + img_width * loop_index + 1] = img_dummy[i];
+    chrominanceU[i * 2 + img_width * loop_index + img_width] = img_dummy[i];
+    chrominanceU[i * 2 + img_width * loop_index + img_width + 1] = img_dummy[i];
+
+Tuesday 10/08/2021:
+I shared my plan to display the YUV420 image on discord with Orqa and I was given a much needed adjustment on my thinking direction: Instead of putting the u and v values into their respective positions, since Y,U and V values are planar, let the fragment shader take care of upscaling it and attaching it to the respective texture coordinates.
+At 11 pm  I was able to load and display the image onto a window in OpenGL. It's upside down and has a green bar at the top but otherwise its THERE! These are easy fixes.
+Things to do: fix the yuv420 image and start working on the yuv422 image.
+Things I do not know: How to unpack the yuv422 image.

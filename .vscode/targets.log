@@ -8,7 +8,7 @@ make.exe: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Aug 09 16:39:14 2021
+# Make data base, printed on Tue Aug 10 23:19:03 2021
 
 # Variables
 
@@ -61,7 +61,7 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-65e3bed6-4eae-40e2-86fd-28b28527d7e9-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-2aa880d2-6a3d-4c59-9249-5161d76ac718-sock
 # environment
 VSCODE_CWD = C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code
 # default
@@ -89,7 +89,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_3984_WTZZPBEGEALXFKPY
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_1552_SOOIEIMCZUUCCBMZ
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -129,7 +129,7 @@ MAKECMDGOALS := all
 # default
 MAKE_VERSION := 4.2.1
 # makefile
-.DEFAULT_GOAL := main
+.DEFAULT_GOAL := main_YUV
 # environment
 PROGRAMFILES(X86) = C:\Program Files (x86)
 # automatic
@@ -201,7 +201,7 @@ PROCESSOR_LEVEL = 6
 # environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
-VSCODE_PID = 3984
+VSCODE_PID = 1552
 # environment
 USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 # variable set hash-table stats:
@@ -213,9 +213,9 @@ USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 
 # Directories
 
-# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628507220): 24 files, no impossibilities.
+# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628617473): 27 files, no impossibilities.
 
-# 24 files, no impossibilities in 1 directories.
+# 27 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -224,24 +224,17 @@ USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 # Files
 
 # Not a target:
-all:
-#  Command line target.
-#  Implicit rule search has been done.
-#  File does not exist.
-#  File has not been updated.
-
-# Not a target:
-main.c:
+stb_image.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
-Makefile:
+all:
+#  Command line target.
 #  Implicit rule search has been done.
-#  Last modified 2021-08-08 16:49:33
-#  File has been updated.
-#  Successfully updated.
+#  File does not exist.
+#  File has not been updated.
 
 stb_image.o: stb_image.c
 #  Implicit rule search has not been done.
@@ -249,6 +242,27 @@ stb_image.o: stb_image.c
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 13):
 	gcc -c stb_image.c
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-08-09 23:01:37
+#  File has been updated.
+#  Successfully updated.
+
+main_YUV: main_YUV.o glad.o stb_image.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 7):
+	gcc main_YUV.o glad.o stb_image.o -o pic_display -lglfw3 -lgdi32 -lopengl32
+
+main_YUV.o: main_YUV.c
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 9):
+	gcc -c main_YUV.c
 
 # Not a target:
 glad/src/glad.c:
@@ -263,24 +277,10 @@ glad/src/glad.c:
 #  File has not been updated.
 
 # Not a target:
-stb_image.c:
+main_YUV.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-
-main: main.o glad.o stb_image.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 7):
-	gcc main.o glad.o stb_image.o -o pic_display -lglfw3 -lgdi32 -lopengl32
-
-main.o: main.c
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 9):
-	gcc -c main.c
 
 glad.o: glad/src/glad.c
 #  Implicit rule search has not been done.
@@ -290,19 +290,19 @@ glad.o: glad/src/glad.c
 	gcc -c glad/src/glad.c
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=0/30=0%
+# Load=11/1024=1%, Rehash=0, Collisions=5/30=17%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 29 / storage = 273 B / avg = 9 B
-# current buf: size = 8162 B / used = 273 B / count = 29 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 32 / storage = 307 B / avg = 9 B
+# current buf: size = 8162 B / used = 307 B / count = 32 / avg = 9 B
 
-# strcache performance: lookups = 45 / hit rate = 35%
+# strcache performance: lookups = 48 / hit rate = 33%
 # hash-table stats:
-# Load=29/8192=0%, Rehash=0, Collisions=1/45=2%
-# Finished Make data base on Mon Aug 09 16:39:14 2021
+# Load=32/8192=0%, Rehash=0, Collisions=1/48=2%
+# Finished Make data base on Tue Aug 10 23:19:03 2021
 
  
