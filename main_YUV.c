@@ -50,10 +50,12 @@ int main(void){
     uint8_t *y_plane = NULL, *u_plane = NULL, *v_plane = NULL;
     unsigned int texture1, texture2, texture3;
 
+    //////////////////////////////////////////////////////////////////////////////////////
     // USER INPUT DATA IMAGE WIDTH/HEIGHT, SELECT AND IMAGE NAME WITH .YUV/.UYVY EXTENSION
     int img_width = 1920, img_height = 1080;
     const int select = 2; // Select format 1: YUV420 image, 2: YUV422 (uyvy) image
     char* my_image = "jiraya_1920_1080.uyvy";
+    //////////////////////////////////////////////////////////////////////////////////////
 
     // Initialize src code for shaders
     dummy1 = read_source_code("shaders/vertex_YUV.shader");
@@ -280,6 +282,7 @@ uint8_t* read_YUV_image(char* filename, int width, int height, int select){
 }
 
 void texture_YUV_420(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint8_t* v_plane, unsigned int *texture1, unsigned int *texture2, unsigned int *texture3, int img_width, int img_height){
+    /* This function sets up the textures for the YUV420 (yuv) image file by setting up the y,u and v_plane arrays and binding them to 3 individual single channel textures.*/
     // Setting up y/u/v_plane to pass to shader
     y_plane = yuv_data;
     u_plane = yuv_data + img_width * img_height;
@@ -332,6 +335,7 @@ void texture_YUV_420(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint
 }
 
 void texture_YUV_422(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint8_t* v_plane, unsigned int *texture1, unsigned int *texture2, unsigned int *texture3, int img_width, int img_height){
+    /* This function sets up the textures for the YUV422 (uyvy) image file by setting up the y,u and v_plane arrays and binding them to 3 individual single channel textures.*/
     // Setting up plane data
     y_plane = calloc(img_width * img_height, sizeof(uint8_t));
     u_plane = calloc(img_width * img_height / 2, sizeof(uint8_t));
@@ -339,10 +343,10 @@ void texture_YUV_422(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint
 
     // looping through each block of 4 bytes in yuv_data to assign y,u,v_plane data
     for(int i = 0; i < img_width * img_height / 2; i++){
-        u_plane[i] = yuv_data[4 * i];
-        y_plane[2 * i] = yuv_data[4 * i + 1];
-        v_plane[i] = yuv_data[4 * i + 2];
-        y_plane[2 * i + 1] = yuv_data[4 * i + 3];
+        u_plane[i]          = yuv_data[4 * i];
+        y_plane[2 * i]      = yuv_data[4 * i + 1];
+        v_plane[i]          = yuv_data[4 * i + 2];
+        y_plane[2 * i + 1]  = yuv_data[4 * i + 3];
     }
 
     
