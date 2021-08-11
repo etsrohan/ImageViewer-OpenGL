@@ -1,8 +1,8 @@
-make.exe --dry-run --always-make --keep-going --print-directory
+make.exe --dry-run --keep-going --print-directory
 make.exe: Entering directory 'c:/Users/Rohan/Desktop/OrqaFPVMiniProject'
-gcc -c main_YUV.c
-gcc -c glad/src/glad.c
-gcc -c stb_image.c
-gcc main_YUV.o glad.o stb_image.o -o pic_display -lglfw3 -lgdi32 -lopengl32
+gcc main.o glad.o stb_image.o -o pic_display -lglfw3 -lgdi32 -lopengl32
+ 
+gcc main_YUV.o glad.o stb_image.o -o pic_display_YUV420 -lglfw3 -lgdi32 -lopengl32
+ 
 make.exe: Leaving directory 'c:/Users/Rohan/Desktop/OrqaFPVMiniProject'
  

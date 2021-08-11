@@ -25,8 +25,8 @@ uint8_t* read_YUV_420_image(char* filename, int width, int height);
 static const float vertices[] = { //Array of vertices coordinates in 3D
    -1.0f, -1.0f, 0.0f,      0.0f, 0.0f,//1, Bottom Left
     1.0f, -1.0f, 0.0f,      1.0f, 0.0f,//2, Bottom Right
-    1.0f,  1.0f, 0.0f,      1.0f, 1.0f,//3, Top Right
-   -1.0f,  1.0f, 0.0f,      0.0f, 1.0f //4, Top Left
+    1.0f,  1.0f,   0.0f,    1.0f, 1.0f,//3, Top Right
+   -1.0f,  1.0f,   0.0f,    0.0f, 1.0f //4, Top Left
 };
 static const unsigned int indices[] = { // Array of indices for setting up 2 triangles
     0, 1, 2, //Triangle 1
@@ -44,10 +44,11 @@ int main(void){
     MyShader  vertexShader, fragmentShader;
     char* dummy1, * dummy2;
     // Initialize Texture variables
-    int img_width = 750, img_height = 500, nrChannels, loop_index;
+    int img_width = 1920, img_height = 1080;
     uint8_t *yuv_data;
     uint8_t *y_plane = NULL, *u_plane = NULL, *v_plane = NULL;
     unsigned int texture1, texture2, texture3;
+    int nc;
 
     // Initialize src code for shaders
     dummy1 = read_source_code("shaders/vertex_YUV.shader");
@@ -121,39 +122,13 @@ int main(void){
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    /*// TEXTURE 1
-    // load and create texture1
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-
-    // set texture parameters
-        //wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        //filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // create texture from loaded image
-    stbi_set_flip_vertically_on_load(1); // Setting image to load right side up
-    data = stbi_load("rinnegan.png", &img_width, & img_height, &nrChannels, 0);
-    if(data){
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img_width, img_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else {
-        printf("Failed to load texture\n");
-    }
-    stbi_image_free(data);*/
-
     // Opening and setting YUV file and parameters
-    yuv_data = read_YUV_420_image("mesa_750_500.yuv", img_width, img_height);
-    printf("Hello there\n");
+    yuv_data = read_YUV_420_image("jiraya_1920_1080.yuv", img_width, img_height);
 
     // Setting up y/u/v_plane to pass to shader
     y_plane = yuv_data;
     u_plane = yuv_data + img_width * img_height;
-    v_plane = yuv_data + img_width * img_height + (int) (img_width * img_height / 4);
+    v_plane = u_plane + (img_width * img_height / 4);
 
     // Send the plane values to shader as separate shaders
         // Y Values
@@ -161,8 +136,8 @@ int main(void){
     glBindTexture(GL_TEXTURE_2D, texture1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     if(y_plane){
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -175,8 +150,8 @@ int main(void){
     glBindTexture(GL_TEXTURE_2D, texture2);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     if(u_plane){
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -190,8 +165,8 @@ int main(void){
     glBindTexture(GL_TEXTURE_2D, texture3);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     if(v_plane){
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -200,13 +175,13 @@ int main(void){
     }
     else printf("V values failed to load\n");
 
-    printf("%d", img_height * img_width);
-
-    // Give fragment shaders their respective textures
+    // Give fragment shader their respective textures
     glUseProgram(shaderProgram);
     glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
     glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
     glUniform1i(glGetUniformLocation(shaderProgram, "texture3"), 2);
+
+    free(yuv_data);
 
     // Input Callback
     glfwSetKeyCallback(window, keyCallback);
@@ -247,7 +222,6 @@ int main(void){
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
     
-    free(yuv_data);
     free(dummy1);
     free(dummy2);
     // End glfw api
@@ -312,19 +286,19 @@ char* read_source_code(char* filename){
 }
 
 uint8_t* read_YUV_420_image(char* filename, int width, int height){
-    /*This function takes in a YUV format (Raw) and breaks it down into 3 arrays, 
+    /*This function takes in a YUV format (Raw) and loads it with its 3 components, 
     luminance (Y component), chrominanceU (U component), chrominanceV (V component)
-    and returns the 3 arrays to the user
+    and returns a single pointer
     Note: This function does require that the user be aware of the width and height 
     of the image*/
 
     FILE* file_pointer = NULL;
     uint8_t* yuv_data = NULL;
 
-    file_pointer = fopen(filename, "r");
+    file_pointer = fopen(filename, "rb");
 
     if(file_pointer){
-        yuv_data = malloc(width * height * 3 / 2 + 1);
+        yuv_data = calloc(width * height * 3 / 2 + 1, sizeof(uint8_t));
         fseek(file_pointer, 0, SEEK_SET);
         fread(yuv_data, sizeof(uint8_t), width * height * 3 / 2, file_pointer);
         yuv_data[width * height * 3 / 2] = '\0';

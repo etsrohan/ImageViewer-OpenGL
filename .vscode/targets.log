@@ -1,6 +1,4 @@
 make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make.exe: *** No rule to make target 'all'.  Stop.
- 
 # GNU Make 4.2.1
 # Built for Windows32
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make.exe: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Aug 10 23:19:03 2021
+# Make data base, printed on Wed Aug 11 00:08:50 2021
 
 # Variables
 
@@ -67,9 +65,11 @@ VSCODE_CWD = C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code
 # default
 MAKE_HOST := Windows32
 # environment
-PATH = C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Users\Rohan\anaconda3;C:\Users\Rohan\anaconda3\Library\mingw-w64\bin;C:\Users\Rohan\anaconda3\Library\usr\bin;C:\Users\Rohan\anaconda3\Library\bin;C:\Users\Rohan\anaconda3\Scripts;C:\Users\Rohan\AppData\Local\Microsoft\WindowsApps;C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;
+PATH = C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS 
+;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Users\Rohan\anaconda3;C:\Users\Rohan\anaconda3\Library\mingw-w64\bin;C:\Users\Rohan\anaconda3\Library\usr\bin;C:\Users\Rohan\anaconda3\Library\bin;C:\Users\Rohan\anaconda3\Scripts;C:\Users\Rohan\AppData\Local\Microsoft\WindowsApps;C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;
 # environment
-COMMONPROGRAMW6432 = C:\Program Files\Common Files
+COMMONPROGRAMW6 
+432 = C:\Program Files\Common Files
 # environment
 ZES_ENABLE_SYSMAN = 1
 # environment
@@ -129,7 +129,7 @@ MAKECMDGOALS := all
 # default
 MAKE_VERSION := 4.2.1
 # makefile
-.DEFAULT_GOAL := main_YUV
+.DEFAULT_GOAL := all
 # environment
 PROGRAMFILES(X86) = C:\Program Files (x86)
 # automatic
@@ -205,7 +205,7 @@ VSCODE_PID = 1552
 # environment
 USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 # variable set hash-table stats:
-# Load=96/1024=9%, Rehash=0, Collisions=15/118=13%
+# Load=96/1024=9%, Rehash=0, Collisions=15/121=12%
 
 # Pattern-specific Variable Values
 
@@ -213,9 +213,9 @@ USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 
 # Directories
 
-# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628617473): 27 files, no impossibilities.
+# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628620706): 29 files, no impossibilities.
 
-# 27 files, no impossibilities in 1 directories.
+# 29 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -225,50 +225,61 @@ USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 
 # Not a target:
 stb_image.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-08-08 16:50:22
+#  File has been updated.
+#  Successfully updated.
 
-# Not a target:
-all:
+all: main main_YUV420
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has not been updated.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
 
 stb_image.o: stb_image.c
 #  Implicit rule search has not been done.
+#  Last modified 2021-08-08 16:50:31
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 15):
+	gcc -c stb_image.c
+
+# Not a target:
+main.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-08-09 22:03:39
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 13):
-	gcc -c stb_image.c
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-08-09 23:01:37
+#  Last modified 2021-08-10 23:41:11
 #  File has been updated.
 #  Successfully updated.
-
-main_YUV: main_YUV.o glad.o stb_image.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 7):
-	gcc main_YUV.o glad.o stb_image.o -o pic_display -lglfw3 -lgdi32 -lopengl32
 
 main_YUV.o: main_YUV.c
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 9):
+#  recipe to execute (from 'Makefile', line 11):
 	gcc -c main_YUV.c
 
 # Not a target:
 glad/src/glad.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-08-04 19:03:26
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 .DEFAULT:
@@ -282,27 +293,71 @@ main_YUV.c:
 #  Modification time never checked.
 #  File has not been updated.
 
+main: main.o glad.o stb_image.o
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := main
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := main.o glad.o stb_image.o
+# automatic
+# | := 
+# automatic
+# < := main.o
+# automatic
+# ^ := main.o glad.o stb_image.o
+# automatic
+# ? := main.o glad.o stb_image.o
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
+#  recipe to execute (from 'Makefile', line 17):
+	gcc main.o glad.o stb_image.o -o pic_display -lglfw3 -lgdi32 -lopengl32
+
+main.o: main.c
+#  Implicit rule search has not been done.
+#  Last modified 2021-08-10 23:38:42
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 19):
+	gcc -c main.c
+
 glad.o: glad/src/glad.c
+#  Implicit rule search has not been done.
+#  Last modified 2021-08-07 17:19:47
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 13):
+	gcc -c glad/src/glad.c
+
+main_YUV420: main_YUV.o glad.o stb_image.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 11):
-	gcc -c glad/src/glad.c
+#  recipe to execute (from 'Makefile', line 9):
+	gcc main_YUV.o glad.o stb_image.o -o pic_display_YUV420 -lglfw3 -lgdi32 -lopengl32
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=5/30=17%
+# Load=14/1024=1%, Rehash=0, Collisions=6/44=14%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 32 / storage = 307 B / avg = 9 B
-# current buf: size = 8162 B / used = 307 B / count = 32 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 35 / storage = 358 B / avg = 10 B
+# current buf: size = 8162 B / used = 358 B / count = 35 / avg = 10 B
 
-# strcache performance: lookups = 48 / hit rate = 33%
+# strcache performance: lookups = 63 / hit rate = 44%
 # hash-table stats:
-# Load=32/8192=0%, Rehash=0, Collisions=1/48=2%
-# Finished Make data base on Tue Aug 10 23:19:03 2021
+# Load=35/8192=0%, Rehash=0, Collisions=1/63=2%
+# Finished M 
+ake data base on Wed Aug 11 00:08:50 2021
 
  

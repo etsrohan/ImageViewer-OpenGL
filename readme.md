@@ -63,3 +63,6 @@ I shared my plan to display the YUV420 image on discord with Orqa and I was give
 At 11 pm  I was able to load and display the image onto a window in OpenGL. It's upside down and has a green bar at the top but otherwise its THERE! These are easy fixes.
 Things to do: fix the yuv420 image and start working on the yuv422 image.
 Things I do not know: How to unpack the yuv422 image.
+
+Wednesday 11/08/2021:
+At 10 am I was able to get rid of the green bar at the bottom. I couldn't find anything all night last night but then this morning I read that images are binary files... then it clicked, I was using fopen(filename, "r"), so I changed it to fopen(filename, "rb") 
