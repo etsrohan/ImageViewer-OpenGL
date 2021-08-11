@@ -66,3 +66,5 @@ Things I do not know: How to unpack the yuv422 image.
 
 Wednesday 11/08/2021:
 At 10 am I was able to get rid of the green bar at the bottom. I couldn't find anything all night last night but then this morning I read that images are binary files... then it clicked, I was using fopen(filename, "r"), so I changed it to fopen(filename, "rb") 
+At around 5 pm, after coming back from work and starting to work on the YUV422 unpacking, the program now displays both yuv420 format and yuv422 (uyvy) format. The the user has to input the width/height, name and mode (select) of the image he/she wants to display. These are all at the top of the body of main.
+Up next is running OpenGL on my graphics card and optimizing the program for it.

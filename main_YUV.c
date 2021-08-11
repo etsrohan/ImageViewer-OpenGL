@@ -19,14 +19,16 @@ typedef struct {
 // Function Declarations
 static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 char* read_source_code(char* filename);
-uint8_t* read_YUV_420_image(char* filename, int width, int height);
+uint8_t* read_YUV_image(char* filename, int width, int height, int select);
+void texture_YUV_420(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint8_t* v_plane, unsigned int *texture1, unsigned int *texture2, unsigned int *texture3, int img_width, int img_height);
+void texture_YUV_422(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint8_t* v_plane, unsigned int *texture1, unsigned int *texture2, unsigned int *texture3, int img_width, int img_height);
 
 // Static Variables
 static const float vertices[] = { //Array of vertices coordinates in 3D
-   -1.0f, -1.0f, 0.0f,      0.0f, 0.0f,//1, Bottom Left
-    1.0f, -1.0f, 0.0f,      1.0f, 0.0f,//2, Bottom Right
-    1.0f,  1.0f,   0.0f,    1.0f, 1.0f,//3, Top Right
-   -1.0f,  1.0f,   0.0f,    0.0f, 1.0f //4, Top Left
+   -1.0f, -1.0f,  0.0f,      0.0f, 0.0f,//1, Bottom Left
+    1.0f, -1.0f,  0.0f,      1.0f, 0.0f,//2, Bottom Right
+    1.0f,  1.0f,  0.0f,      1.0f, 1.0f,//3, Top Right
+   -1.0f,  1.0f,  0.0f,      0.0f, 1.0f //4, Top Left
 };
 static const unsigned int indices[] = { // Array of indices for setting up 2 triangles
     0, 1, 2, //Triangle 1
@@ -44,11 +46,14 @@ int main(void){
     MyShader  vertexShader, fragmentShader;
     char* dummy1, * dummy2;
     // Initialize Texture variables
-    int img_width = 1920, img_height = 1080;
     uint8_t *yuv_data;
     uint8_t *y_plane = NULL, *u_plane = NULL, *v_plane = NULL;
     unsigned int texture1, texture2, texture3;
-    int nc;
+
+    // USER INPUT DATA IMAGE WIDTH/HEIGHT, SELECT AND IMAGE NAME WITH .YUV/.UYVY EXTENSION
+    int img_width = 1920, img_height = 1080;
+    const int select = 2; // Select format 1: YUV420 image, 2: YUV422 (uyvy) image
+    char* my_image = "jiraya_1920_1080.uyvy";
 
     // Initialize src code for shaders
     dummy1 = read_source_code("shaders/vertex_YUV.shader");
@@ -123,57 +128,12 @@ int main(void){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Opening and setting YUV file and parameters
-    yuv_data = read_YUV_420_image("jiraya_1920_1080.yuv", img_width, img_height);
+    yuv_data = read_YUV_image(my_image, img_width, img_height, select);
 
-    // Setting up y/u/v_plane to pass to shader
-    y_plane = yuv_data;
-    u_plane = yuv_data + img_width * img_height;
-    v_plane = u_plane + (img_width * img_height / 4);
-
-    // Send the plane values to shader as separate shaders
-        // Y Values
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    if(y_plane){
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width, img_height, 0, GL_RED, GL_UNSIGNED_BYTE, y_plane);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else printf("Y values failed to load\n");
-        // U Values
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    if(u_plane){
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, u_plane);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else printf("U values failed to load\n");
-
-        // V Values
-    glGenTextures(1, &texture3);
-    glBindTexture(GL_TEXTURE_2D, texture3);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    if(v_plane){
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, v_plane);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else printf("V values failed to load\n");
+    if(select == 1) // selecting YUV420 image
+        texture_YUV_420(yuv_data, y_plane, u_plane, v_plane, &texture1, &texture2, &texture3, img_width, img_height);
+    if(select == 2)
+        texture_YUV_422(yuv_data, y_plane, u_plane, v_plane, &texture1, &texture2, &texture3, img_width, img_height);
 
     // Give fragment shader their respective textures
     glUseProgram(shaderProgram);
@@ -285,10 +245,11 @@ char* read_source_code(char* filename){
     return buffer;
 }
 
-uint8_t* read_YUV_420_image(char* filename, int width, int height){
+uint8_t* read_YUV_image(char* filename, int width, int height, int select){
     /*This function takes in a YUV format (Raw) and loads it with its 3 components, 
     luminance (Y component), chrominanceU (U component), chrominanceV (V component)
     and returns a single pointer
+    select = 1 : YUV420 format, select = 2 : UYVY (YUV422) format
     Note: This function does require that the user be aware of the width and height 
     of the image*/
 
@@ -298,14 +259,139 @@ uint8_t* read_YUV_420_image(char* filename, int width, int height){
     file_pointer = fopen(filename, "rb");
 
     if(file_pointer){
-        yuv_data = calloc(width * height * 3 / 2 + 1, sizeof(uint8_t));
-        fseek(file_pointer, 0, SEEK_SET);
-        fread(yuv_data, sizeof(uint8_t), width * height * 3 / 2, file_pointer);
-        yuv_data[width * height * 3 / 2] = '\0';
+        if(select == 1){
+            yuv_data = calloc(width * height * 3 / 2 + 1, sizeof(uint8_t));
+            fseek(file_pointer, 0, SEEK_SET);
+            fread(yuv_data, sizeof(uint8_t), width * height * 3 / 2, file_pointer);
+            yuv_data[width * height * 3 / 2] = '\0';
+        }
+        if(select == 2){
+            yuv_data = calloc(width * height * 2 + 1, sizeof(uint8_t));
+            fseek(file_pointer, 0, SEEK_SET);
+            fread(yuv_data, sizeof(uint8_t), width * height * 2, file_pointer);
+            yuv_data[width * height * 2] = '\0';
+        }
         fclose(file_pointer);
     }
     else{
         printf("FILE FAILED TO LOAD\n");
     }
     return yuv_data;
+}
+
+void texture_YUV_420(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint8_t* v_plane, unsigned int *texture1, unsigned int *texture2, unsigned int *texture3, int img_width, int img_height){
+    // Setting up y/u/v_plane to pass to shader
+    y_plane = yuv_data;
+    u_plane = yuv_data + img_width * img_height;
+    v_plane = u_plane + (img_width * img_height / 4);
+
+    // Send the plane values to shader as separate shaders
+        // Y Values
+    glGenTextures(1, texture1);
+    glBindTexture(GL_TEXTURE_2D, *texture1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    if(y_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width, img_height, 0, GL_RED, GL_UNSIGNED_BYTE, y_plane); 
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else printf("Y values failed to load\n");
+        // U Values
+    glGenTextures(1, texture2);
+    glBindTexture(GL_TEXTURE_2D, *texture2);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    if(u_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, u_plane);  // width/2 and height/2 because the u component corresponds to 4 components in y (as a box)
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else printf("U values failed to load\n");
+
+        // V Values
+    glGenTextures(1, texture3);
+    glBindTexture(GL_TEXTURE_2D, *texture3);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    if(v_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height / 2, 0, GL_RED, GL_UNSIGNED_BYTE, v_plane); // same as u component, (Imagine y, u and v as co-centeric boxes but u and v have half the dimensions of y)
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else printf("V values failed to load\n");
+}
+
+void texture_YUV_422(uint8_t* yuv_data, uint8_t* y_plane, uint8_t* u_plane, uint8_t* v_plane, unsigned int *texture1, unsigned int *texture2, unsigned int *texture3, int img_width, int img_height){
+    // Setting up plane data
+    y_plane = calloc(img_width * img_height, sizeof(uint8_t));
+    u_plane = calloc(img_width * img_height / 2, sizeof(uint8_t));
+    v_plane = calloc(img_width * img_height / 2, sizeof(uint8_t));
+
+    // looping through each block of 4 bytes in yuv_data to assign y,u,v_plane data
+    for(int i = 0; i < img_width * img_height / 2; i++){
+        u_plane[i] = yuv_data[4 * i];
+        y_plane[2 * i] = yuv_data[4 * i + 1];
+        v_plane[i] = yuv_data[4 * i + 2];
+        y_plane[2 * i + 1] = yuv_data[4 * i + 3];
+    }
+
+    
+    // Send the plane values to shader as separate shaders
+        // Y Values
+    glGenTextures(1, texture1);
+    glBindTexture(GL_TEXTURE_2D, *texture1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    if(y_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width, img_height, 0, GL_RED, GL_UNSIGNED_BYTE, y_plane);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else printf("Y values failed to load\n");
+        // U Values
+    glGenTextures(1, texture2);
+    glBindTexture(GL_TEXTURE_2D, *texture2);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    if(u_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height, 0, GL_RED, GL_UNSIGNED_BYTE, u_plane); // width/2 because the u component corresponds to 2 components in y (horizontally)
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else printf("U values failed to load\n");
+
+        // V Values
+    glGenTextures(1, texture3);
+    glBindTexture(GL_TEXTURE_2D, *texture3);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    if(v_plane){
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, img_width / 2, img_height, 0, GL_RED, GL_UNSIGNED_BYTE, v_plane); // same as u component, (Imagine y, u and v as transposed onto each other but u and v are only half as wide with same center)
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else printf("V values failed to load\n");
+
+    free(y_plane);
+    free(u_plane);
+    free(v_plane);
 }

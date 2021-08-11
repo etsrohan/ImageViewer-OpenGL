@@ -6,7 +6,7 @@
 all: main main_YUV420
 
 main_YUV420: main_YUV.o glad.o stb_image.o
-	gcc main_YUV.o glad.o stb_image.o -o pic_display_YUV420 -lglfw3 -lgdi32 -lopengl32
+	gcc main_YUV.o glad.o stb_image.o -o pic_display_YUV -lglfw3 -lgdi32 -lopengl32
 main_YUV.o: main_YUV.c
 	gcc -c main_YUV.c
 glad.o: glad/src/glad.c

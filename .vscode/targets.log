@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Aug 11 00:08:50 2021
+# Make data base, printed on Wed Aug 11 17:05:46 2021
 
 # Variables
 
@@ -47,7 +47,8 @@ ONEDRIVE = C:\Users\Rohan\OneDrive
 # environment
 PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
 # makefile (from 'Makefile', line 1)
-MAKEFILE_LIST :=  Makefile
+MAKEFILE_LIST :=  Ma 
+kefile
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -59,17 +60,15 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-2aa880d2-6a3d-4c59-9249-5161d76ac718-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-21bea213-948d-4e87-841d-77f8d9099259-sock
 # environment
 VSCODE_CWD = C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code
 # default
 MAKE_HOST := Windows32
 # environment
-PATH = C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS 
-;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Users\Rohan\anaconda3;C:\Users\Rohan\anaconda3\Library\mingw-w64\bin;C:\Users\Rohan\anaconda3\Library\usr\bin;C:\Users\Rohan\anaconda3\Library\bin;C:\Users\Rohan\anaconda3\Scripts;C:\Users\Rohan\AppData\Local\Microsoft\WindowsApps;C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;
+PATH = C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Users\Rohan\anaconda3;C:\Users\Rohan\anaconda3\Library\mingw-w64\bin;C:\Users\Rohan\anaconda3\Library\usr\bin;C:\Users\Rohan\anaconda3\Library\bin;C:\Users\Rohan\anaconda3\Scripts;C:\Users\Rohan\AppData\Local\Microsoft\WindowsApps;C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;
 # environment
-COMMONPROGRAMW6 
-432 = C:\Program Files\Common Files
+COMMONPROGRAMW6432 = C:\Program Files\Common Files
 # environment
 ZES_ENABLE_SYSMAN = 1
 # environment
@@ -89,7 +88,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_1552_SOOIEIMCZUUCCBMZ
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5548_SIZUMXNZDLNKMPND
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -201,7 +200,7 @@ PROCESSOR_LEVEL = 6
 # environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
-VSCODE_PID = 1552
+VSCODE_PID = 5548
 # environment
 USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 # variable set hash-table stats:
@@ -213,9 +212,9 @@ USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 
 # Directories
 
-# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628620706): 29 files, no impossibilities.
+# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628681732): 31 files, no impossibilities.
 
-# 29 files, no impossibilities in 1 directories.
+# 31 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -263,7 +262,7 @@ main.c:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-08-10 23:41:11
+#  Last modified 2021-08-11 17:05:43
 #  File has been updated.
 #  Successfully updated.
 
@@ -341,7 +340,7 @@ main_YUV420: main_YUV.o glad.o stb_image.o
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 9):
-	gcc main_YUV.o glad.o stb_image.o -o pic_display_YUV420 -lglfw3 -lgdi32 -lopengl32
+	gcc main_YUV.o glad.o stb_image.o -o pic_display_YUV -lglfw3 -lgdi32 -lopengl32
 
 # files hash-table stats:
 # Load=14/1024=1%, Rehash=0, Collisions=6/44=14%
@@ -351,13 +350,12 @@ main_YUV420: main_YUV.o glad.o stb_image.o
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 35 / storage = 358 B / avg = 10 B
-# current buf: size = 8162 B / used = 358 B / count = 35 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 37 / storage = 399 B / avg = 10 B
+# current buf: size = 8162 B / used = 399 B / count = 37 / avg = 10 B
 
-# strcache performance: lookups = 63 / hit rate = 44%
+# strcache performance: lookups = 65 / hit rate = 43%
 # hash-table stats:
-# Load=35/8192=0%, Rehash=0, Collisions=1/63=2%
-# Finished M 
-ake data base on Wed Aug 11 00:08:50 2021
+# Load=37/8192=0%, Rehash=0, Collisions=1/65=2%
+# Finished Make data base on Wed Aug 11 17:05:46 2021
 
  
