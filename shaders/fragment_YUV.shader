@@ -21,6 +21,6 @@ void main(){
     float g = y - 0.39173 * u - 0.81290 * v;
     float b = y + 2.017 * u;
 
-    FragColor = vec4(r, g, b, 0.0);
+    FragColor = vec4(r, g, b, 1.0);
 }
 //end
