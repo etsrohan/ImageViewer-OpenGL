@@ -3,7 +3,10 @@
         "glfw3.h": "c",
         "stdio.h": "c",
         "glad.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stb_image.h": "c",
+        "functions.h": "c",
+        "math.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }

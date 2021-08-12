@@ -1,9 +1,9 @@
 // Headers and Libraries
-#include "glad/include/glad/glad.h"
+#include "src/header/Rohan/glad.h"
 #define GLF_INCLUDE_NONE
-#include "glfw-3.3.4.bin.WIN32/include/GLFW/glfw3.h"
+#include "src/header/Rohan/glfw3.h"
 
-#include "stb_image.h" //stbi_load
+#include "src/header/Rohan/stb_image.h" //stbi_load
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,8 +47,8 @@ int main(void){
     unsigned int texture1, texture2; 
 
     // Initialize src code for shaders
-    dummy1 = read_source_code("shaders/vertex.shader");
-    dummy2 = read_source_code("shaders/fragment.shader");
+    dummy1 = read_source_code("src/shaders/vertex.shader");
+    dummy2 = read_source_code("src/shaders/fragment.shader");
     vertexShader.src_code = dummy1;
     fragmentShader.src_code = dummy2;
 
@@ -62,7 +62,7 @@ int main(void){
     // Initialize Window
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    window = glfwCreateWindow(883, 498, "Image Loader", NULL, NULL);
+    window = glfwCreateWindow(1280, 720, "Image Loader", NULL, NULL);
     if (!window){
         printf("Couldn't open window\n");
         glfwTerminate();
