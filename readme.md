@@ -68,3 +68,6 @@ Wednesday 11/08/2021:
 At 10 am I was able to get rid of the green bar at the bottom. I couldn't find anything all night last night but then this morning I read that images are binary files... then it clicked, I was using fopen(filename, "r"), so I changed it to fopen(filename, "rb") 
 At around 5 pm, after coming back from work and starting to work on the YUV422 unpacking, the program now displays both yuv420 format and yuv422 (uyvy) format. The the user has to input the width/height, name and mode (select) of the image he/she wants to display. These are all at the top of the body of main.
 Up next is running OpenGL on my graphics card and optimizing the program for it.
+
+Thursday 12/08/2021:
+Today I formatted my code according to the pdf document 'orqa_c_guide', added a bunch of error handeling and file restructuring. Also I started reading about the OpenGL extensions that I would need to get started on optimizing my program. Came a long way, a long way ahead, this will be fun.

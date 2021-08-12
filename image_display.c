@@ -68,7 +68,7 @@ int main(ROHAN_NOARGS void){
 
     // Initialize GLFW
     if (!glfwInit()){
-        printf("Couldn't initiate GLFW\n");
+        printf("ERROR: Couldn't initiate GLFW\n");
         return ROHAN_GLFW_INIT_ERR;
     }
 
@@ -77,7 +77,7 @@ int main(ROHAN_NOARGS void){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     window = glfwCreateWindow(1280, 720, "Image Loader", NULL, NULL);
     if (!window){
-        printf("Couldn't open window\n");
+        printf("ERROR: Couldn't open window\n");
         glfwTerminate();
         return ROHAN_WINDOW_INIT_ERR;
     }
@@ -89,7 +89,7 @@ int main(ROHAN_NOARGS void){
     // Create/Compile Vertex Shader by giving Vertex Shader source code
     vertex_shader.name = glCreateShader(GL_VERTEX_SHADER);
     if(!vertex_shader.name || vertex_shader.name == GL_INVALID_ENUM){
-        printf("Vertex shader failed to be created.\n");
+        printf("ERROR: Vertex shader failed to be created.\n");
         goto error;
     }
     glShaderSource(vertex_shader.name, 1, &vertex_shader.src_code, NULL);
@@ -98,7 +98,7 @@ int main(ROHAN_NOARGS void){
     // Create/Compile Fragment Shader by giving Fragment Shader source code
     fragment_shader.name = glCreateShader(GL_FRAGMENT_SHADER);
     if(!fragment_shader.name || fragment_shader.name == GL_INVALID_ENUM){
-        printf("Fragment shader failed to be created.\n");
+        printf("ERROR: Fragment shader failed to be created.\n");
         goto error;
     }
     glShaderSource(fragment_shader.name, 1, &fragment_shader.src_code, NULL);
@@ -107,7 +107,7 @@ int main(ROHAN_NOARGS void){
     // Create/Link shaders to program
     shader_program = glCreateProgram();
     if(!shader_program){
-        printf("Shader program failed to be created.\n");
+        printf("ERROR: Shader program failed to be created.\n");
         goto error;
     }
     glAttachShader(shader_program, vertex_shader.name);
@@ -121,20 +121,20 @@ int main(ROHAN_NOARGS void){
     // Generate VBO AND VAO and EBO
     glGenBuffers(1, &VBO);
     if(VBO == GL_INVALID_VALUE){
-        printf("VBO failed to be generated\n");
+        printf("ERROR: VBO failed to be generated\n");
         glDeleteProgram(shader_program);
         goto error;
     }
     glGenVertexArrays(1, &VAO);
     if(VAO == GL_INVALID_VALUE){
-        printf("VAO failed to be generated\n");
+        printf("ERROR: VAO failed to be generated\n");
         glDeleteBuffers(1, &VBO);
         glDeleteProgram(shader_program);
         goto error;
     }
     glGenBuffers(1, &EBO);
     if(EBO == GL_INVALID_VALUE){
-        printf("EBO failed to be generated\n");
+        printf("ERROR: EBO failed to be generated\n");
         glDeleteBuffers(1, &VBO);
         glDeleteVertexArrays(1, &VAO);
         glDeleteProgram(shader_program);

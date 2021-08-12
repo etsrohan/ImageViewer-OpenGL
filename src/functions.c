@@ -77,7 +77,7 @@ uint8_t* rohan_read_YUV_image(ROHAN_IN char const* const filename, ROHAN_IN int 
         }
     }
     else{
-        printf("FILE FAILED TO LOAD\n");
+        printf("ERROR: FILE FAILED TO LOAD\n");
     }
     return data;
 }
@@ -152,5 +152,5 @@ void rohan_texture_helper(ROHAN_IN uint8_t const* const plane, ROHAN_OUT unsigne
 
         glGenerateMipmap(GL_TEXTURE_2D);
     }
-    else printf("%p values failed to load\n", plane);
+    else printf("ERROR: %p values failed to load\n", plane);
 }
