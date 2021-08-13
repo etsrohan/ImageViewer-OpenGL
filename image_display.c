@@ -27,6 +27,10 @@ int main(ROHAN_NOARGS void){
     uint8_t *y_plane = NULL, *u_plane = NULL, *v_plane = NULL;
     unsigned int texture_1, texture_2, texture_3;
     int main_err = EXIT_SUCCESS;
+    // FPS Counter Variables
+    double last_time = 0;
+    double current_time = 0;
+    double num_frames = 0;
 
     // Static Variables
     float const vertices[] = { //Array of vertices coordinates in 3D
@@ -43,8 +47,8 @@ int main(ROHAN_NOARGS void){
     //====================================================================================
     // IMAGE INPUT DATA (IMAGE WIDTH/HEIGHT, SELECT AND IMAGE NAME WITH .YUV/.UYVY EXTENSION)
     int img_width = 1920, img_height = 1080, number_channels = 0;  // This is important to predefine for YUV formats, not so much RGB
-    int const select = 2; // Select format 1: YUV420 image, 2: YUV422 (uyvy) image, 3: RGB image
-    char* my_image = "jiraya_1920_1080.uyvy";
+    int const select = 1; // Select format 1: YUV420 image, 2: YUV422 (uyvy) image, 3: RGB image
+    char* my_image = "jiraya_1920_1080.yuv";
     //====================================================================================
 
     // Initialize src code for shaders
@@ -73,7 +77,7 @@ int main(ROHAN_NOARGS void){
     }
 
     // Initialize Window
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     window = glfwCreateWindow(1280, 720, "Image Loader", NULL, NULL);
     if (!window){
@@ -198,6 +202,8 @@ int main(ROHAN_NOARGS void){
 
     // Input Callback
     glfwSetKeyCallback(window, rohan_key_callback);
+    // Setup last_time 
+    last_time = glfwGetTime();
 
     // Loop While Window Is Open
     while (!glfwWindowShouldClose(window)){ 
@@ -231,10 +237,14 @@ int main(ROHAN_NOARGS void){
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+        // Print FPS onto terminal
+        rohan_fps_counter(&last_time, &current_time, &num_frames);
+
         //Switch Front and Back Buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    printf("\n");
 
     preerror:
     // Delete buffers to free memory

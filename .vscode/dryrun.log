@@ -1,7 +1,12 @@
-make.exe --dry-run --keep-going --print-directory
+make.exe --dry-run --always-make --keep-going --print-directory
 make.exe: Entering directory 'c:/Users/Rohan/Desktop/OrqaFPVMiniProject'
-gcc fun_exploration.o glad.o stb_image.o -o fun_wallpaper -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
+gcc -c fun_exploration.c
+gcc -c src/glad.c
  
+gcc -c src/stb_image.c
+gcc fun_exploration.o glad.o stb_image.o -o fun_wallpaper -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
+gcc -c image_display.c
+gcc -c src/functions.c
 gcc image_display.o glad.o stb_image.o functions.o -o image_display -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
 make.exe: Leaving directory 'c:/Users/Rohan/Desktop/OrqaFPVMiniProject'
  

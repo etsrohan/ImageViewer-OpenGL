@@ -1,9 +1,9 @@
-#include "glad/include/glad/glad.h" //gladLoadGL
+#include "header/Rohan/glad.h" //gladLoadGL
 #define GLF_INCLUDE_NONE
-#include "glfw-3.3.4.bin.WIN32/include/GLFW/glfw3.h" //glfwFunctions
+#include "header/Rohan/glfw3.h" //glfwFunctions
 
-#include "stb_image.h" //stbi_load, stbi_image_free
-#include "functions.h"
+#include "header/Rohan/stb_image.h" //stbi_load, stbi_image_free
+#include "header/Rohan/functions.h"
 
 #include <stdio.h> //printf
 #include <stdlib.h> //fopen, fread, fseek
@@ -153,4 +153,16 @@ void rohan_texture_helper(ROHAN_IN uint8_t const* const plane, ROHAN_OUT unsigne
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else printf("ERROR: %p values failed to load\n", plane);
+}
+
+void rohan_fps_counter(ROHAN_REF double* last_time, ROHAN_OUT double* current_time, ROHAN_REF double* num_frames){
+    /* This function displays the frames per second 
+    and time to draw 1 frame on the terminal*/
+    *current_time = glfwGetTime();
+    *num_frames += 0.001;
+    if(*current_time - *last_time >= 1.0){    // If the last print statement was more than a second ago
+        printf("\rFPS: %f, Milliseconds Per Frame: %f", *num_frames * 1000.0, 1.0 / *num_frames);
+        *num_frames = 0;
+        *last_time += 1.0;
+    }
 }

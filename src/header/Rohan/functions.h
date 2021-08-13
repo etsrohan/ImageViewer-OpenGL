@@ -31,6 +31,7 @@ void rohan_texture_YUV_420(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_p
 void rohan_texture_YUV_422(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_plane, ROHAN_OUT uint8_t* u_plane, ROHAN_OUT uint8_t* v_plane, ROHAN_OUT unsigned int *texture_1, ROHAN_OUT unsigned int *texture_2, ROHAN_OUT unsigned int *texture_3, ROHAN_IN int const img_width, ROHAN_IN int const img_height);
 void rohan_texture_RGB(ROHAN_REF uint8_t* const data, ROHAN_OUT unsigned int *texture_1, ROHAN_IN int const img_width, ROHAN_IN int const img_height);
 void rohan_texture_helper(ROHAN_IN uint8_t const* const plane, ROHAN_OUT unsigned int* texture, ROHAN_IN int const img_width, ROHAN_IN int const scale_width, ROHAN_IN int const img_height, ROHAN_IN int const scale_height, ROHAN_IN int const number_channels);
+void rohan_fps_counter(ROHAN_REF double* last_time, ROHAN_OUT double* current_time, ROHAN_REF double* num_frames);
 //============================================================================================================================================================================
 
 #endif //ROHAN_MY_FUNCTIONS_H

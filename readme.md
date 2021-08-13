@@ -71,3 +71,6 @@ Up next is running OpenGL on my graphics card and optimizing the program for it.
 
 Thursday 12/08/2021:
 Today I formatted my code according to the pdf document 'orqa_c_guide', added a bunch of error handeling and file restructuring. Also I started reading about the OpenGL extensions that I would need to get started on optimizing my program. Came a long way, a long way ahead, this will be fun.
+
+Friday 13/08/2021:
+I added a simple block of code to display the FPS and Milliseconds per Frame onto the terminal to get an idea of the performance of the program. I have been reading some websites on how to optimize the code for my GPU but its not clicking yet, lets give it some more time and continue reading. 
