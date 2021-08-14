@@ -161,8 +161,101 @@ void rohan_fps_counter(ROHAN_REF double* last_time, ROHAN_OUT double* current_ti
     *current_time = glfwGetTime();
     *num_frames += 0.001;
     if(*current_time - *last_time >= 1.0){    // If the last print statement was more than a second ago
-        printf("\rFPS: %f, Milliseconds Per Frame: %f", *num_frames * 1000.0, 1.0 / *num_frames);
+        printf("\rFPS: %0.1f, Milliseconds Per Frame: %f", *num_frames * 1000.0, 1.0 / *num_frames);
         *num_frames = 0;
         *last_time += 1.0;
+    }
+}
+
+void rohan_texture_YUV_optimized(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_plane, ROHAN_OUT uint8_t* u_plane, ROHAN_OUT uint8_t* v_plane, ROHAN_OUT unsigned int *texture_1, ROHAN_IN int const img_width, ROHAN_IN int const img_height, ROHAN_IN int const select){
+    /* This function takes in raw YUV data and converts 
+    it to RGB data for the YUV420 and YUV422 (uyvy) formats*/
+    uint8_t *formatted_data = calloc(img_width * img_height * 3, sizeof(uint8_t)); // Final formatted data
+    int loop_index;
+    int i; // for loop index
+
+    if(select == 1){
+        // Unpack image data
+        
+        y_plane = data;
+        u_plane = data + img_width * img_height;
+        v_plane = u_plane + img_width * img_height / 4;
+
+        // Arrange YUV420 (yuv) format: yyyyyy...uuuuu...vvvvv -> y,u,v,y,u,v
+        /* For the algorithm I explain it in readme file
+            Basic idea is that I calculate the corresponding y position 
+            for u and v values and I put them in order of 3 byte y,u,v 
+            so yi -> 3 * yi, so ui -> 3 * ui + 1 and vi -> 3 * vi +2*/
+        for(i = 0; i < img_width * img_height; i++){ // Sorting the y values
+            formatted_data[3 * i] = y_plane[i];
+        }
+
+        loop_index = -1;
+        for(i = 0; i < img_width * img_height / 4; i++){ // looping through every u value
+            if(i % (img_width / 2) == 0) loop_index++;
+            formatted_data[3 * (i * 2 + img_width * loop_index) + 1]                  = u_plane[i]; // Sorting the u values (single u value corresponds to 4 y values)
+            formatted_data[3 * (i * 2 + img_width * loop_index + 1) + 1]              = u_plane[i];
+            formatted_data[3 * (i * 2 + img_width * loop_index + img_width) + 1]      = u_plane[i];
+            formatted_data[3 * (i * 2 + img_width * loop_index + img_width + 1) + 1]  = u_plane[i];
+        }
+
+        loop_index = -1;
+        for(i = 0; i < img_width * img_height / 4; i++){ // looping through every v value
+            if(i % (img_width / 2) == 0) loop_index++;
+            formatted_data[3 * (i * 2 + img_width * loop_index) + 2]                  = v_plane[i]; // Sorting the v values
+            formatted_data[3 * (i * 2 + img_width * loop_index + 1) + 2]              = v_plane[i];
+            formatted_data[3 * (i * 2 + img_width * loop_index + img_width) + 2]      = v_plane[i];
+            formatted_data[3 * (i * 2 + img_width * loop_index + img_width + 1) + 2]  = v_plane[i];
+        }
+
+    }
+    else if(select == 2){
+        // Unpack image data and arrange into YUV422 (uyvy) format: u,y,v,y,u,y,v,y -> y,u,v,y,u,v
+        /*Basic idea here is that I am converting 4 bytes into 6 bytes
+          so u0 y0 v0 y1 -> y0 u0 v0 y1 u0 v0
+              0  1  2  3 ->  1  0  2  3  0  2*/
+        for(int i = 0; i < img_width * img_height / 2; i++){ // looping through every 4 bytes of image data (every 4 bytes contais 2 pixels and total number of pixels is width*height)
+            formatted_data[6 * i]       = data[4 * i + 1]; 
+            formatted_data[6 * i + 1]   = data[4 * i];
+            formatted_data[6 * i + 2]   = data[4 * i + 2];
+            formatted_data[6 * i + 3]   = data[4 * i + 3];
+            formatted_data[6 * i + 4]   = data[4 * i];
+            formatted_data[6 * i + 5]   = data[4 * i + 2];
+        }
+    }
+
+    // Convert YUV image to RGB image
+    rohan_YUV_to_RGB_converter(formatted_data, img_width, img_height);
+
+    // Generate Texture from converted RGB image
+    rohan_texture_helper(formatted_data, texture_1, img_width, 1, img_height, 1, 3);
+
+    free(formatted_data);
+}
+
+void rohan_YUV_to_RGB_converter(ROHAN_OUT uint8_t* yuv, ROHAN_IN int const img_width, ROHAN_IN int const img_height){
+    uint8_t red, green, blue;
+    uint8_t y, u, v;
+
+    for(int i = 0; i < img_width * img_height; i ++){ // Looping through every pixel
+        y = yuv[3 * i];
+        u = yuv[3 * i + 1];
+        v = yuv[3 * i + 2];
+
+        if((1.164 * (y - 16) + 1.596 * (v - 128)) <= 255 && ((1.164 * (y - 16) + 1.596 * (v - 128)) >= 0)) red = (uint8_t) (1.164 * (y - 16) + 1.596 * (v - 128));
+        else if (((1.164 * (y - 16) + 1.596 * (v - 128)) > 255)) red = 255;
+        else red = 0; 
+
+        if((1.164 * (y - 16) - 0.813 * (v - 128) - 0.391 * (u - 128)) <= 255 && (1.164 * (y - 16) - 0.813 * (v - 128) - 0.391 * (u - 128)) >= 0) green = (uint8_t) (1.164 * (y - 16) - 0.813 * (v - 128) - 0.391 * (u - 128));
+        else if ((1.164 * (y - 16) - 0.813 * (v - 128) - 0.391 * (u - 128)) > 255) green = 255;
+        else green = 0; 
+
+        if((1.164 * (y - 16) + 2.018 * (u - 128)) <= 255 && (1.164 * (y - 16) + 2.018 * (u - 128)) >= 0) blue = (uint8_t) (1.164 * (y - 16) + 2.018 * (u - 128));
+        else if ((1.164 * (y - 16) + 2.018 * (u - 128)) > 255) blue = 255;
+        else blue = 0;  
+
+        yuv[3 * i]      = red;
+        yuv[3 * i + 1]  = green;
+        yuv[3 * i + 2]  = blue;
     }
 }

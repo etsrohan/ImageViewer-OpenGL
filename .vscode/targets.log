@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Aug 13 12:52:22 2021
+# Make data base, printed on Sun Aug 15 02:02:55 2021
 
 # Variables
 
@@ -31,8 +31,7 @@ HOMEDRIVE = C:
 # automatic
 @F = $(notdir $@)
 # automatic
-^D = $(patsubst %/,%,$( 
-patsubst %\,%,$(dir $^)))
+^D = $(patsubst %/,%,$(patsubst %\,%,$(dir $^)))
 # makefile
 CURDIR := c:/Users/Rohan/Desktop/OrqaFPVMiniProject
 # default
@@ -48,7 +47,8 @@ ONEDRIVE = C:\Users\Rohan\OneDrive
 # environment
 PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
 # makefile (from 'Makefile', line 1)
-MAKEFILE_LIST :=  Makefile
+MAKEFILE_LIST :=  Ma 
+kefile
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -60,7 +60,7 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1734c9a3-8df9-472a-8144-a3e63cfe5186-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-064ffee6-5f3b-4d7b-a6f8-77bbe228dcdb-sock
 # environment
 VSCODE_CWD = C:\Users\Rohan\AppData\Local\Programs\Microsoft VS Code
 # default
@@ -88,7 +88,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10036_HYDZESCJRXLXSOCS
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_8416_KCTNVNLUNOOISXDU
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -200,7 +200,7 @@ PROCESSOR_LEVEL = 6
 # environment
 FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
-VSCODE_PID = 10036
+VSCODE_PID = 8416
 # environment
 USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 # variable set hash-table stats:
@@ -212,9 +212,9 @@ USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 
 # Directories
 
-# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628839295): 29 files, no impossibilities.
+# . (key c:/Users/Rohan/Desktop/OrqaFPVMiniProject, mtime 1628973134): 32 files, no impossibilities.
 
-# 29 files, no impossibilities in 1 directories.
+# 32 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -222,7 +222,7 @@ USERDOMAIN_ROAMINGPROFILE = LAPTOP-NKSJSKGR
 
 # Files
 
-all: fun_exploration image_display
+all: image_display_all image_display
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -237,25 +237,12 @@ image_display.c:
 #  Modification time never checked.
 #  File has not been updated.
 
-image_display: image_display.o glad.o stb_image.o functions.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 9):
-	gcc image_display.o glad.o stb_image.o functions.o -o image_display -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
-
-# Not a target:
-fun_exploration.c:
-#  Implicit rule search has been done.
-#  Last modified 2021-08-13 01:05:07
-#  File has been updated.
-#  Successfully updated.
-
 # Not a target:
 src/functions.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-08-15 01:31:36
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 .SUFFIXES:
@@ -266,37 +253,45 @@ src/functions.c:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-08-13 00:58:59
+#  Last modified 2021-08-15 02:02:11
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+image_display_all.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-08-15 01:58:49
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 src/glad.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-08-04 19:03:26
+#  Last modified 2021-08-14 21:34:40
 #  File has been updated.
 #  Successfully updated.
 
 stb_image.o: src/stb_image.c
 #  Implicit rule search has not been done.
-#  Last modified 2021-08-08 16:50:31
+#  Last modified 2021-08-13 12:56:57
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 15):
+#  recipe to execute (from 'Makefile', line 17):
 	gcc -c src/stb_image.c
 
 # Not a target:
 src/stb_image.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-08-08 16:50:22
+#  Last modified 2021-08-13 12:56:33
 #  File has been updated.
 #  Successfully updated.
 
 functions.o: src/functions.c
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 17):
+#  Last modified 2021-08-15 01:50:37
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 19):
 	gcc -c src/functions.c
 
 # Not a target:
@@ -309,66 +304,73 @@ image_display.o: image_display.c
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 11):
+#  recipe to execute (from 'Makefile', line 13):
 	gcc -c image_display.c
 
-fun_exploration: fun_exploration.o glad.o stb_image.o
+image_display: image_display.o glad.o stb_image.o functions.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 9):
+	gcc image_display.o glad.o stb_image.o functions.o -o image_display -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
+
+glad.o: src/glad.c
+#  Implicit rule search has not been done.
+#  Last modified 2021-08-14 21:34:48
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 15):
+	gcc -c src/glad.c
+
+image_display_all: image_display_all.o glad.o stb_image.o functions.o
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: ''
 #  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
-# @ := fun_exploration
+# @ := image_display_all
 # automatic
 # % := 
 # automatic
 # * := 
 # automatic
-# + := fun_exploration.o glad.o stb_image.o
+# + := image_display_all.o glad.o stb_image.o functions.o
 # automatic
 # | := 
 # automatic
-# < := fun_exploration.o
+# < := image_display_all.o
 # automatic
-# ^ := fun_exploration.o glad.o stb_image.o
+# ^ := image_display_all.o glad.o stb_image.o functions.o
 # automatic
-# ? := fun_exploration.o glad.o stb_image.o
+# ? := image_display_all.o glad.o stb_image.o functions.o
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/11=9%
-#  recipe to execute (from 'Makefile', line 19):
-	gcc fun_exploration.o glad.o stb_image.o -o fun_wallpaper -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
+#  recipe to execute (from 'Makefile', line 11):
+	gcc image_display_all.o glad.o stb_image.o functions.o -o image_display_all -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
 
-fun_exploration.o: fun_exploration.c
+image_display_all.o: image_display_all.c
 #  Implicit rule search has not been done.
-#  Last modified 2021-08-13 01:05:10
+#  Last modified 2021-08-15 02:02:14
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 21):
-	gcc -c fun_exploration.c
-
-glad.o: src/glad.c
-#  Implicit rule search has not been done.
-#  Last modified 2021-08-07 17:19:47
-#  File has been updated.
-#  Successfully updated.
-#  recipe to execute (from 'Makefile', line 13):
-	gcc -c src/glad.c
+	gcc -c image_display_all.c
 
 # files hash-table stats:
-# Load=16/1024=2%, Rehash=0, Collisions=3/49=6%
+# Load=16/1024=2%, Rehash=0, Collisions=0/50=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 37 / storage = 442 B / avg = 11 B
-# current buf: size = 8162 B / used = 442 B / count = 37 / avg = 11 B
+# strcache buffers: 1 (0) / strings = 40 / storage = 506 B / avg = 12 B
+# current buf: size = 8162 B / used = 506 B / count = 40 / avg = 12 B
 
-# strcache performance: lookups = 67 / hit rate = 44%
+# strcache performance: lookups = 71 / hit rate = 43%
 # hash-table stats:
-# Load=37/8192=0%, Rehash=0, Collisions=1/67=1%
-# Finished Make data base on Fri Aug 13 12:52:22 2021
+# Load=40/8192=0%, Rehash=0, Collisions=1/71=1%
+# Finished Make data base on Sun Aug 15 02:02:55 2021
 
  
