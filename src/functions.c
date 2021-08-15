@@ -234,6 +234,8 @@ void rohan_texture_YUV_optimized(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_
 }
 
 void rohan_YUV_to_RGB_converter(ROHAN_OUT uint8_t* yuv, ROHAN_IN int const img_width, ROHAN_IN int const img_height){
+    /*This function takes in image data in YUV format and converts it to RGB format
+      (input) y u v y u v y u v -> r g b r g b r g b (output) */
     uint8_t red, green, blue;
     uint8_t y, u, v;
 

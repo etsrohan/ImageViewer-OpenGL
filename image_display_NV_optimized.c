@@ -35,6 +35,12 @@ int main(ROHAN_NOARGS void){
     char* my_image = "jiraya_1920_1080.uyvy";
     //====================================================================================
 
+    // value of select must be 1, 2 or 3
+    if(!(select == 1 || select == 2 || select == 3)){
+        printf("ERROR: Please input select value = 1, 2 or 3\n");
+        return EXIT_FAILURE;
+    }
+
     // Initialize GLFW
     if (!glfwInit()){
         printf("ERROR: Couldn't initiate GLFW\n");
@@ -44,7 +50,7 @@ int main(ROHAN_NOARGS void){
     // Initialize Window
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    window = glfwCreateWindow(1280, 720, "Image Loader", NULL, NULL);
+    window = glfwCreateWindow(1280, 720, "Image Loader NVIDIA Optimized", NULL, NULL);
     if (!window){
         printf("ERROR: Couldn't open window\n");
         glfwTerminate();

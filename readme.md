@@ -1,3 +1,10 @@
+HOW TO USE THE CODE:
+In both image_display.c and image_display_NV_optimized.c scroll down to the section containing IMAGE INPUT DATA.
+Input the name of the image as a string with the extension (.jpg, .bmp, .yuv, .uyvy).
+Input the width and height of the image (required for YUV files, not so much for other formats)
+Enter the integer value in 'select' (1 = YUV420, 2 = YUV422 (uyvy), 3 = RGB)
+Make the file using the Makefile and it should be ready.
+
 This is the readme file for the Orqa FPV miniproject. This documents contains my progress. Ideas and thought process.
 
 The project problem statement:
