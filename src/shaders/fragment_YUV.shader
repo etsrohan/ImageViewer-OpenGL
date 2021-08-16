@@ -18,4 +18,3 @@ void main(){
 
     FragColor = vec4(rgb, 1.0);
 }
-//end

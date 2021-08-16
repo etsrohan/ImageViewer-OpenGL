@@ -10,7 +10,10 @@
 #include <string.h> //memcpy
 
 // Function Definitions
-char* rohan_read_shader_source_code(ROHAN_IN char const* const filename){
+char* rohan_read_shader_source_code(
+    ROHAN_IN char const* const filename
+)
+{
     /*This function takes in the file path from input and sends back the source
     code for the specified shader*/
     char* buffer = NULL;
@@ -18,7 +21,7 @@ char* rohan_read_shader_source_code(ROHAN_IN char const* const filename){
     FILE * file_pointer = NULL;
     int i = 0;
 
-    file_pointer = fopen(filename, "r");
+    file_pointer = fopen(filename, "rb");
 
     if (file_pointer){
         fseek(file_pointer, 0, SEEK_END);
@@ -26,27 +29,26 @@ char* rohan_read_shader_source_code(ROHAN_IN char const* const filename){
         fseek(file_pointer, 0, SEEK_SET);
         buffer = malloc(sizeof(char) * (length + 1));
 
-        buffer[length] = '\0'; // This was not working (I was getting garbage values after program ended.)
+        buffer[length] = '\0'; 
+        // This was not working (I was getting garbage values after program ended. I later realized that it was beccause I was opening the file in "r" mode and not "rb" mode)
         fread(buffer, 1, length, file_pointer);
         if(fclose(file_pointer)){
             free(buffer);
             buffer = NULL;
             return buffer;
         }
-            
-        // Go through file backwards and where ever it finds '//' replace first '/' with '\0'
-        for(i = length - 1; i > 0; i--){
-            if(buffer[i] == '/' && buffer[i + 1] == '/'){
-                buffer[i] = '\0';
-                break;
-            }
-        }
     }
 
     return buffer;
 }
 
-uint8_t* rohan_read_YUV_image(ROHAN_IN char const* const filename, ROHAN_IN int const width, ROHAN_IN int const height, ROHAN_IN int const select){
+uint8_t* rohan_read_YUV_image(
+    ROHAN_IN char const* const filename, 
+    ROHAN_IN int const width, 
+    ROHAN_IN int const height, 
+    ROHAN_IN int const select
+)
+{
     /*This function takes in a YUV format (Raw) and loads it with its 3 components, 
     luminance (Y component), chrominanceU (U component), chrominanceV (V component)
     and returns a single pointer
@@ -77,12 +79,23 @@ uint8_t* rohan_read_YUV_image(ROHAN_IN char const* const filename, ROHAN_IN int 
         }
     }
     else{
-        printf("ERROR: FILE FAILED TO LOAD\n");
+        fprintf(stderr, "ERROR: FILE FAILED TO LOAD\n");
     }
     return data;
 }
 
-void rohan_texture_YUV_420(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_plane, ROHAN_OUT uint8_t* u_plane, ROHAN_OUT uint8_t* v_plane, ROHAN_OUT unsigned int *texture_1, ROHAN_OUT unsigned int *texture_2, ROHAN_OUT unsigned int *texture_3, ROHAN_IN int const img_width, ROHAN_IN int const img_height){
+void rohan_texture_YUV_420(
+    ROHAN_REF uint8_t* const data, 
+    ROHAN_OUT uint8_t* y_plane, 
+    ROHAN_OUT uint8_t* u_plane, 
+    ROHAN_OUT uint8_t* v_plane, 
+    ROHAN_OUT unsigned int *texture_1, 
+    ROHAN_OUT unsigned int *texture_2, 
+    ROHAN_OUT unsigned int *texture_3, 
+    ROHAN_IN int const img_width, 
+    ROHAN_IN int const img_height
+)
+{
     /* This function sets up the textures for the YUV420 (yuv) image file by setting up the y,u and v_plane arrays and binding them to 3 individual single channel textures.*/
     // Setting up y/u/v_plane to pass to shader
     y_plane = data;
@@ -98,7 +111,18 @@ void rohan_texture_YUV_420(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_p
     rohan_texture_helper(v_plane, texture_3, img_width, 2, img_height, 2, 1);
 }
 
-void rohan_texture_YUV_422(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_plane, ROHAN_OUT uint8_t* u_plane, ROHAN_OUT uint8_t* v_plane, ROHAN_OUT unsigned int *texture_1, ROHAN_OUT unsigned int *texture_2, ROHAN_OUT unsigned int *texture_3, ROHAN_IN int img_width, ROHAN_IN int img_height){
+void rohan_texture_YUV_422(
+    ROHAN_REF uint8_t* const data, 
+    ROHAN_OUT uint8_t* y_plane, 
+    ROHAN_OUT uint8_t* u_plane, 
+    ROHAN_OUT uint8_t* v_plane, 
+    ROHAN_OUT unsigned int *texture_1, 
+    ROHAN_OUT unsigned int *texture_2, 
+    ROHAN_OUT unsigned int *texture_3, 
+    ROHAN_IN int img_width, 
+    ROHAN_IN int img_height
+)
+{
     /* This function sets up the textures for the YUV422 (uyvy) image file by setting up the y,u and v_plane arrays and binding them to 3 individual single channel textures.*/
     // Setting up plane data
     y_plane = calloc(img_width * img_height, sizeof(uint8_t));
@@ -128,11 +152,26 @@ void rohan_texture_YUV_422(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_p
     free(v_plane);
 }
 
-void rohan_texture_RGB(uint8_t* const data, unsigned int *texture_1, int const img_width, int const img_height){
+void rohan_texture_RGB(
+    uint8_t* const data, 
+    unsigned int *texture_1, 
+    int const img_width, 
+    int const img_height
+)
+{
     rohan_texture_helper(data, texture_1, img_width, 1, img_height, 1, 3);
 }
 
-void rohan_texture_helper(ROHAN_IN uint8_t const* const plane, ROHAN_OUT unsigned int* texture, ROHAN_IN int const img_width, ROHAN_IN int const scale_width, ROHAN_IN int const img_height, ROHAN_IN int const scale_height, ROHAN_IN int const number_channels){
+void rohan_texture_helper(
+    ROHAN_IN uint8_t const* const plane, 
+    ROHAN_OUT unsigned int* texture, 
+    ROHAN_IN int const img_width, 
+    ROHAN_IN int const scale_width, 
+    ROHAN_IN int const img_height, 
+    ROHAN_IN int const scale_height, 
+    ROHAN_IN int const number_channels
+)
+{
     /*This function sets up a texture plane based on given image width and height
       It scales the image depending on the scaling factors image_dimension / scale_dimension
       If number_channels = 1: single vector of texture made, number_channels = 3: vec3 texture made*/
@@ -152,24 +191,42 @@ void rohan_texture_helper(ROHAN_IN uint8_t const* const plane, ROHAN_OUT unsigne
 
         glGenerateMipmap(GL_TEXTURE_2D);
     }
-    else printf("ERROR: %p values failed to load\n", plane);
+    else fprintf(stderr, "ERROR: %p values failed to load\n", plane);
 }
 
-void rohan_fps_counter(ROHAN_REF double* last_time, ROHAN_OUT double* current_time, ROHAN_REF double* num_frames){
+void rohan_fps_counter(
+    ROHAN_REF double* last_time, 
+    ROHAN_OUT double* current_time, 
+    ROHAN_REF double* num_frames
+)
+{
     /* This function displays the frames per second 
     and time to draw 1 frame on the terminal*/
     *current_time = glfwGetTime();
     *num_frames += 0.001;
     if(*current_time - *last_time >= 1.0){    // If the last print statement was more than a second ago
-        printf("\rFPS: %0.1f, Milliseconds Per Frame: %f", *num_frames * 1000.0, 1.0 / *num_frames);
+        fprintf(stdout, "\rFPS: %0.1f, Milliseconds Per Frame: %f", *num_frames * 1000.0, 1.0 / *num_frames);
         *num_frames = 0;
         *last_time += 1.0;
     }
 }
 
-void rohan_texture_YUV_optimized(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_t* y_plane, ROHAN_OUT uint8_t* u_plane, ROHAN_OUT uint8_t* v_plane, ROHAN_OUT unsigned int *texture_1, ROHAN_IN int const img_width, ROHAN_IN int const img_height, ROHAN_IN int const select){
-    /* This function takes in raw YUV data and converts 
-    it to RGB data for the YUV420 and YUV422 (uyvy) formats*/
+void rohan_texture_YUV_optimized(
+    ROHAN_REF uint8_t* const data, 
+    ROHAN_OUT uint8_t* y_plane, 
+    ROHAN_OUT uint8_t* u_plane, 
+    ROHAN_OUT uint8_t* v_plane, 
+    ROHAN_OUT unsigned int *texture_1, 
+    ROHAN_IN int const img_width, 
+    ROHAN_IN int const img_height, 
+    ROHAN_IN int const select
+)
+{
+    /*This function takes in raw YUV data and converts it to RGB data for the YUV420 and 
+    YUV422 (uyvy) formats    
+    It first converts the appropriate raw data to y,u,v,y,u,v,... set of 3 bytes    
+    Then it converts the y,u,v,y,u,v,... into r,g,b,r,g,b,... values    
+    Then it converts those rgb values into a texture for display purposes*/
     uint8_t *formatted_data = calloc(img_width * img_height * 3, sizeof(uint8_t)); // Final formatted data
     int loop_index;
     int i; // for loop index
@@ -233,7 +290,12 @@ void rohan_texture_YUV_optimized(ROHAN_REF uint8_t* const data, ROHAN_OUT uint8_
     free(formatted_data);
 }
 
-void rohan_YUV_to_RGB_converter(ROHAN_OUT uint8_t* yuv, ROHAN_IN int const img_width, ROHAN_IN int const img_height){
+void rohan_YUV_to_RGB_converter(
+    ROHAN_OUT uint8_t* yuv, 
+    ROHAN_IN int const img_width, 
+    ROHAN_IN int const img_height
+)
+{
     /*This function takes in image data in YUV format and converts it to RGB format
       (input) y u v y u v y u v -> r g b r g b r g b (output) */
     uint8_t red, green, blue;

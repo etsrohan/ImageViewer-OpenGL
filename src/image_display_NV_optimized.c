@@ -37,13 +37,13 @@ int main(ROHAN_NOARGS void){
 
     // value of select must be 1, 2 or 3
     if(!(select == 1 || select == 2 || select == 3)){
-        printf("ERROR: Please input select value = 1, 2 or 3\n");
+        fprintf(stderr, "ERROR: Please input select value = 1, 2 or 3\n");
         return EXIT_FAILURE;
     }
 
     // Initialize GLFW
     if (!glfwInit()){
-        printf("ERROR: Couldn't initiate GLFW\n");
+        fprintf(stderr, "ERROR: Couldn't initiate GLFW\n");
         return ROHAN_GLFW_INIT_ERR;
     }
 
@@ -52,7 +52,7 @@ int main(ROHAN_NOARGS void){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     window = glfwCreateWindow(1280, 720, "Image Loader NVIDIA Optimized", NULL, NULL);
     if (!window){
-        printf("ERROR: Couldn't open window\n");
+        fprintf(stderr, "ERROR: Couldn't open window\n");
         glfwTerminate();
         return ROHAN_WINDOW_INIT_ERR;
     }
@@ -79,7 +79,7 @@ int main(ROHAN_NOARGS void){
         stbi_image_free(data);
     }
     if(!data){
-        printf("ERROR: Failed to load texture(s)\n");
+        fprintf(stderr, "ERROR: Failed to load texture(s)\n");
         goto error;
     }
 
@@ -114,10 +114,10 @@ int main(ROHAN_NOARGS void){
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    printf("\n");
+    fprintf(stdout, "\n");
     goto end;
     error:
-    printf("\nOOPS! Something went wrong!\n");
+    fprintf(stderr, "\nOOPS! Something went wrong!\n");
     main_err = EXIT_FAILURE;
 
     end:

@@ -47,8 +47,8 @@ int main(ROHAN_NOARGS void){
     //====================================================================================
     // IMAGE INPUT DATA (IMAGE WIDTH/HEIGHT, SELECT AND IMAGE NAME WITH .YUV/.UYVY EXTENSION)
     int img_width = 1920, img_height = 1080, number_channels = 0;  // This is important to predefine for YUV formats, not so much RGB
-    int const select = 2; // Select format 1: YUV420 image, 2: YUV422 (uyvy) image, 3: RGB image
-    char* my_image = "images/jiraya_1920_1080.uyvy";
+    int const select = 3; // Select format 1: YUV420 image, 2: YUV422 (uyvy) image, 3: RGB image
+    char* my_image = "images/jiraya.jpg";
     //====================================================================================
 
     // Initialize src code for shaders
@@ -59,12 +59,12 @@ int main(ROHAN_NOARGS void){
     else if(select == 1 || select == 2)
         dummy_2 = rohan_read_shader_source_code("src/shaders/fragment_YUV.shader");
     else{
-        printf("\nERROR: Please enter a valid value for 'select' (1, 2 or 3)\n");
+        fprintf(stderr, "\nERROR: Please enter a valid value for 'select' (1, 2 or 3)\n");
         free(dummy_1);
         return EXIT_FAILURE;
     }
     if(dummy_1 == NULL || dummy_2 == NULL){
-        printf("\nERROR: Shader files failed to open or close\n");
+        fprintf(stderr, "\nERROR: Shader files failed to open or close\n");
         return EXIT_FAILURE;
     }
     vertex_shader.src_code = dummy_1;
@@ -72,7 +72,7 @@ int main(ROHAN_NOARGS void){
 
     // Initialize GLFW
     if (!glfwInit()){
-        printf("ERROR: Couldn't initiate GLFW\n");
+        fprintf(stderr, "ERROR: Couldn't initiate GLFW\n");
         return ROHAN_GLFW_INIT_ERR;
     }
 
@@ -81,7 +81,7 @@ int main(ROHAN_NOARGS void){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     window = glfwCreateWindow(1280, 720, "Image Loader", NULL, NULL);
     if (!window){
-        printf("ERROR: Couldn't open window\n");
+        fprintf(stderr, "ERROR: Couldn't open window\n");
         glfwTerminate();
         return ROHAN_WINDOW_INIT_ERR;
     }
@@ -93,7 +93,7 @@ int main(ROHAN_NOARGS void){
     // Create/Compile Vertex Shader by giving Vertex Shader source code
     vertex_shader.name = glCreateShader(GL_VERTEX_SHADER);
     if(!vertex_shader.name || vertex_shader.name == GL_INVALID_ENUM){
-        printf("ERROR: Vertex shader failed to be created.\n");
+        fprintf(stderr, "ERROR: Vertex shader failed to be created.\n");
         goto error;
     }
     glShaderSource(vertex_shader.name, 1, &vertex_shader.src_code, NULL);
@@ -102,7 +102,7 @@ int main(ROHAN_NOARGS void){
     // Create/Compile Fragment Shader by giving Fragment Shader source code
     fragment_shader.name = glCreateShader(GL_FRAGMENT_SHADER);
     if(!fragment_shader.name || fragment_shader.name == GL_INVALID_ENUM){
-        printf("ERROR: Fragment shader failed to be created.\n");
+        fprintf(stderr, "ERROR: Fragment shader failed to be created.\n");
         goto error;
     }
     glShaderSource(fragment_shader.name, 1, &fragment_shader.src_code, NULL);
@@ -111,7 +111,7 @@ int main(ROHAN_NOARGS void){
     // Create/Link shaders to program
     shader_program = glCreateProgram();
     if(!shader_program){
-        printf("ERROR: Shader program failed to be created.\n");
+        fprintf(stderr, "ERROR: Shader program failed to be created.\n");
         goto error;
     }
     glAttachShader(shader_program, vertex_shader.name);
@@ -129,20 +129,20 @@ int main(ROHAN_NOARGS void){
     // Generate VBO AND VAO and EBO
     glGenBuffers(1, &VBO);
     if(VBO == GL_INVALID_VALUE){
-        printf("ERROR: VBO failed to be generated\n");
+        fprintf(stderr, "ERROR: VBO failed to be generated\n");
         glDeleteProgram(shader_program);
         goto error;
     }
     glGenVertexArrays(1, &VAO);
     if(VAO == GL_INVALID_VALUE){
-        printf("ERROR: VAO failed to be generated\n");
+        fprintf(stderr, "ERROR: VAO failed to be generated\n");
         glDeleteBuffers(1, &VBO);
         glDeleteProgram(shader_program);
         goto error;
     }
     glGenBuffers(1, &EBO);
     if(EBO == GL_INVALID_VALUE){
-        printf("ERROR: EBO failed to be generated\n");
+        fprintf(stderr, "ERROR: EBO failed to be generated\n");
         glDeleteBuffers(1, &VBO);
         glDeleteVertexArrays(1, &VAO);
         glDeleteProgram(shader_program);
@@ -189,7 +189,7 @@ int main(ROHAN_NOARGS void){
         stbi_image_free(data);
     }
     if(!data){
-        printf("ERROR: Failed to load texture(s)\n");
+        fprintf(stderr, "ERROR: Failed to load texture(s)\n");
         goto preerror;
     }
 
@@ -248,7 +248,7 @@ int main(ROHAN_NOARGS void){
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    printf("\n");
+    fprintf(stdout, "\n");
 
     preerror:
     // Delete buffers to free memory
@@ -259,7 +259,7 @@ int main(ROHAN_NOARGS void){
     goto end;
 
     error:
-    printf("\nOOPS! Something went wrong!\n");
+    fprintf(stderr, "\nOOPS! Something went wrong!\n");
     main_err = EXIT_FAILURE;
 
     end:   

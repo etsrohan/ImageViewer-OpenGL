@@ -12,4 +12,3 @@ void main(){
    vertexColor = aCol;
    TexCoord = aTexCoord;
 }
-//end

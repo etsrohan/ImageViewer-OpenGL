@@ -1,9 +1,9 @@
 // Headers and Libraries
-#include "src/header/Rohan/glad.h"
+#include "header/glad.h"
 #define GLF_INCLUDE_NONE
-#include "src/header/Rohan/glfw3.h"
+#include "header/glfw3.h"
 
-#include "src/header/Rohan/stb_image.h" //stbi_load
+#include "header/stb_image.h" //stbi_load
 
 #include <stdio.h>
 #include <stdlib.h>
