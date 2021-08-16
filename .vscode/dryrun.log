@@ -5,9 +5,13 @@ gcc -c src/image_display_NV_optimized.c
 gcc -c src/glad.c
  
 gcc -c src/stb_image.c
+ 
 gcc -c src/functions.c
+ 
 gcc image_display_NV_optimized.o glad.o stb_image.o functions.o -o image_display_NV_optimized -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
+ 
 gcc -c src/image_display.c
+ 
 gcc image_display.o glad.o stb_image.o functions.o -o image_display -lglfw3 -lgdi32 -lopengl32 -std=c99 -pedantic -pipe -Wall -Wextra
 make.exe: Leaving directory 'c:/Users/Rohan/Desktop/OrqaFPVMiniProject'
  
