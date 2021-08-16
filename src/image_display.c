@@ -1,10 +1,10 @@
 // Headers and Libraries
-#include "src/header/Rohan/glad.h" //gladLoadGL
+#include "header/glad.h" //gladLoadGL
 #define GLF_INCLUDE_NONE
-#include "src/header/Rohan/glfw3.h" //glfwFunctions
+#include "header/glfw3.h" //glfwFunctions
 
-#include "src/header/Rohan/stb_image.h" //stbi_load, stbi_image_free
-#include "src/header/Rohan/functions.h" //most of it
+#include "header/stb_image.h" //stbi_load, stbi_image_free
+#include "header/Rohan/functions.h" //most of it
 
 #include <stdio.h> //printf
 #include <stdlib.h> //fopen, fread, fseek
@@ -48,7 +48,7 @@ int main(ROHAN_NOARGS void){
     // IMAGE INPUT DATA (IMAGE WIDTH/HEIGHT, SELECT AND IMAGE NAME WITH .YUV/.UYVY EXTENSION)
     int img_width = 1920, img_height = 1080, number_channels = 0;  // This is important to predefine for YUV formats, not so much RGB
     int const select = 2; // Select format 1: YUV420 image, 2: YUV422 (uyvy) image, 3: RGB image
-    char* my_image = "jiraya_1920_1080.uyvy";
+    char* my_image = "images/jiraya_1920_1080.uyvy";
     //====================================================================================
 
     // Initialize src code for shaders

@@ -1,8 +1,8 @@
-#include "header/Rohan/glad.h" //gladLoadGL
+#include "header/glad.h" //gladLoadGL
 #define GLF_INCLUDE_NONE
-#include "header/Rohan/glfw3.h" //glfwFunctions
+#include "header/glfw3.h" //glfwFunctions
 
-#include "header/Rohan/stb_image.h" //stbi_load, stbi_image_free
+#include "header/stb_image.h" //stbi_load, stbi_image_free
 #include "header/Rohan/functions.h"
 
 #include <stdio.h> //printf
