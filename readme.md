@@ -1,5 +1,7 @@
 **HOW TO USE THE CODE:**
 
+image_display.c and image_display_NV_optimized contain the main functions.
+
 In both image_display.c and image_display_NV_optimized.c scroll down to the section containing IMAGE INPUT DATA.
 Input the name of the image as a string with the extension (.jpg, .bmp, .yuv, .uyvy).
 Input the width and height of the image (required for YUV files, not so much for other formats)
